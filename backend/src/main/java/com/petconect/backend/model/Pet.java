@@ -33,7 +33,7 @@ public class Pet {
     @Column(nullable = false)
     private double weight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tutor_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pets"})
     private Tutor tutor;

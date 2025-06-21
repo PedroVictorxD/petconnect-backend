@@ -5,6 +5,7 @@ com/petconect/backend/repository/LojistaRepository.class
 com/petconect/backend/controller/AdminController.class
 com/petconect/backend/controller/PetController.class
 com/petconect/backend/controller/AuthController$LoginRequest.class
+com/petconect/backend/repository/UserRepository.class
 com/petconect/backend/model/Tutor.class
 com/petconect/backend/controller/ProductController.class
 com/petconect/backend/model/Store.class
