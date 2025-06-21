@@ -1,26 +1,35 @@
 package com.petconect.backend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
-    private String type;
-    private double weight;
-    private int age;
-    private String activityLevel;
+
+    @Column(nullable = false)
+    private String species;
+
     private String breed;
-    private String notes;
+
+    @Column(nullable = false)
+    private int age;
+    
+    @Column(nullable = false)
+    private double weight;
+
+    @Column(name = "tutor_id", nullable = false)
     private Long tutorId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 } 
