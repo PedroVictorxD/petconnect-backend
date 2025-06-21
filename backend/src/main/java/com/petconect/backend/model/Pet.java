@@ -3,11 +3,14 @@ package com.petconect.backend.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +23,7 @@ public class Pet {
     private String name;
 
     @Column(nullable = false)
-    private String species;
+    private String type;
 
     private String breed;
 
@@ -30,6 +33,15 @@ public class Pet {
     @Column(nullable = false)
     private double weight;
 
-    @Column(name = "tutor_id", nullable = false)
-    private Long tutorId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tutor_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pets"})
+    private Tutor tutor;
+
+    private String photoUrl;
+    
+    @Column(name = "activity_level")
+    private String activityLevel;
+    
+    private String notes;
 } 
