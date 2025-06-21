@@ -11,7 +11,7 @@ Sistema completo de backend em Spring Boot com PostgreSQL para conectar tutores,
 
 ## 🚀 Configuração Rápida
 
-### 1. Configurar PostgreSQL
+### 1. Configurar PostgreSQL.
 
 ```bash
 # Executar o script de configuração
