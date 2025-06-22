@@ -4,15 +4,17 @@ import com.petconect.backend.model.Lojista;
 import com.petconect.backend.repository.LojistaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/lojistas")
+@RequestMapping("/api/lojistas")
 @RequiredArgsConstructor
 public class LojistaController {
     private final LojistaRepository lojistaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<Lojista> getAll() {
@@ -28,6 +30,7 @@ public class LojistaController {
 
     @PostMapping
     public Lojista create(@RequestBody Lojista lojista) {
+        lojista.setPassword(passwordEncoder.encode(lojista.getPassword()));
         return lojistaRepository.save(lojista);
     }
 

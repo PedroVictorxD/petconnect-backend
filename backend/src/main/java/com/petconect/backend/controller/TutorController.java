@@ -4,15 +4,17 @@ import com.petconect.backend.model.Tutor;
 import com.petconect.backend.repository.TutorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/tutores")
+@RequestMapping("/api/tutores")
 @RequiredArgsConstructor
 public class TutorController {
     private final TutorRepository tutorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<Tutor> getAll() {
@@ -28,6 +30,7 @@ public class TutorController {
 
     @PostMapping
     public Tutor create(@RequestBody Tutor tutor) {
+        tutor.setPassword(passwordEncoder.encode(tutor.getPassword()));
         return tutorRepository.save(tutor);
     }
 

@@ -1,12 +1,18 @@
 package com.petconect.backend.model;
 
 import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.DiscriminatorValue;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("TUTOR")
+@Getter
+@Setter
+@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pets"})
 public class Tutor extends User {
     // Nenhum campo extra
-} 
+}

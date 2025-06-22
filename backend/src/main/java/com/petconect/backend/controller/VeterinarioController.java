@@ -4,15 +4,17 @@ import com.petconect.backend.model.Veterinario;
 import com.petconect.backend.repository.VeterinarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/veterinarios")
+@RequestMapping("/api/veterinarios")
 @RequiredArgsConstructor
 public class VeterinarioController {
     private final VeterinarioRepository veterinarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<Veterinario> getAll() {
@@ -28,6 +30,7 @@ public class VeterinarioController {
 
     @PostMapping
     public Veterinario create(@RequestBody Veterinario veterinario) {
+        veterinario.setPassword(passwordEncoder.encode(veterinario.getPassword()));
         return veterinarioRepository.save(veterinario);
     }
 

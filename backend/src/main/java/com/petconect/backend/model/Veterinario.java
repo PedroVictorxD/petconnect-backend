@@ -1,12 +1,18 @@
 package com.petconect.backend.model;
 
 import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.DiscriminatorValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("VETERINARIO")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Veterinario extends User {
     private String crmv;
 } 
