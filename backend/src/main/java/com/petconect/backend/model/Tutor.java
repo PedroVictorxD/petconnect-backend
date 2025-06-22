@@ -15,4 +15,4 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pets"})
 public class Tutor extends User {
     // Nenhum campo extra
-}
+} 
