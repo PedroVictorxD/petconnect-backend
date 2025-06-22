@@ -4,75 +4,266 @@ import com.petconect.backend.model.*;
 import com.petconect.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminRepository adminRepository;
+    private final TutorRepository tutorRepository;
+    private final VeterinarioRepository veterinarioRepository;
+    private final LojistaRepository lojistaRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final VetServiceRepository vetServiceRepository;
     private final PetRepository petRepository;
     private final FoodRepository foodRepository;
     private final StoreRepository storeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // ===== GERENCIAMENTO DE USUÁRIOS =====
     
+    @PostMapping("/admins")
+    public Admin createAdmin(@RequestBody Admin admin) {
+        // Codificar a senha antes de salvar
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        return adminRepository.save(admin);
+    }
+    
+    @PostMapping("/tutors")
+    public Tutor createTutor(@RequestBody Tutor tutor) {
+        // Codificar a senha antes de salvar
+        tutor.setPassword(passwordEncoder.encode(tutor.getPassword()));
+        return tutorRepository.save(tutor);
+    }
+    
+    @PostMapping("/veterinarios")
+    public Veterinario createVeterinario(@RequestBody Veterinario veterinario) {
+        // Codificar a senha antes de salvar
+        veterinario.setPassword(passwordEncoder.encode(veterinario.getPassword()));
+        return veterinarioRepository.save(veterinario);
+    }
+    
+    @PostMapping("/lojistas")
+    public Lojista createLojista(@RequestBody Lojista lojista) {
+        // Codificar a senha antes de salvar
+        lojista.setPassword(passwordEncoder.encode(lojista.getPassword()));
+        return lojistaRepository.save(lojista);
+    }
+    
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> allUsers = new ArrayList<>();
+        allUsers.addAll(tutorRepository.findAll());
+        allUsers.addAll(veterinarioRepository.findAll());
+        allUsers.addAll(lojistaRepository.findAll());
+        allUsers.addAll(adminRepository.findAll());
+        return allUsers;
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        // Verificar em cada repositório específico
+        User user = tutorRepository.findById(id).orElse(null);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        }
+        
+        user = veterinarioRepository.findById(id).orElse(null);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        }
+        
+        user = lojistaRepository.findById(id).orElse(null);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        }
+        
+        user = adminRepository.findById(id).orElse(null);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
     @Transactional
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        return userRepository.findById(id).map(user -> {
-            user.setName(userDetails.getName());
-            user.setEmail(userDetails.getEmail());
-            user.setPhone(userDetails.getPhone());
-            
-            // A anotação @Transactional garante que a sessão do Hibernate permaneça
-            // aberta, permitindo o downcasting e a atualização correta das subclasses.
-            if (user instanceof Veterinario) {
-                 // O frontend não envia o CRMV, então não há o que atualizar aqui por enquanto.
-                 // Poderíamos adicionar esse campo ao formulário de edição do admin no futuro.
-            } else if (user instanceof Lojista) {
-                 // O mesmo para CNPJ.
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody java.util.Map<String, Object> userDetails) {
+        // Primeiro, tentar encontrar o usuário em cada repositório específico
+        User user = null;
+        
+        // Verificar se é um Tutor
+        user = tutorRepository.findById(id).orElse(null);
+        if (user != null) {
+            Tutor tutor = (Tutor) user;
+            // Atualizar campos básicos
+            if (userDetails.containsKey("name")) {
+                tutor.setName((String) userDetails.get("name"));
             }
-            
-            User updatedUser = userRepository.save(user);
-            return ResponseEntity.ok(updatedUser);
-        }).orElse(ResponseEntity.notFound().build());
+            if (userDetails.containsKey("email")) {
+                tutor.setEmail((String) userDetails.get("email"));
+            }
+            if (userDetails.containsKey("phone")) {
+                tutor.setPhone((String) userDetails.get("phone"));
+            }
+            return ResponseEntity.ok(tutorRepository.save(tutor));
+        }
+        
+        // Verificar se é um Veterinario
+        user = veterinarioRepository.findById(id).orElse(null);
+        if (user != null) {
+            Veterinario veterinario = (Veterinario) user;
+            // Atualizar campos básicos
+            if (userDetails.containsKey("name")) {
+                veterinario.setName((String) userDetails.get("name"));
+            }
+            if (userDetails.containsKey("email")) {
+                veterinario.setEmail((String) userDetails.get("email"));
+            }
+            if (userDetails.containsKey("phone")) {
+                veterinario.setPhone((String) userDetails.get("phone"));
+            }
+            // Atualizar campos específicos do veterinário
+            if (userDetails.containsKey("crmv")) {
+                veterinario.setCrmv((String) userDetails.get("crmv"));
+            }
+            return ResponseEntity.ok(veterinarioRepository.save(veterinario));
+        }
+        
+        // Verificar se é um Lojista
+        user = lojistaRepository.findById(id).orElse(null);
+        if (user != null) {
+            Lojista lojista = (Lojista) user;
+            // Atualizar campos básicos
+            if (userDetails.containsKey("name")) {
+                lojista.setName((String) userDetails.get("name"));
+            }
+            if (userDetails.containsKey("email")) {
+                lojista.setEmail((String) userDetails.get("email"));
+            }
+            if (userDetails.containsKey("phone")) {
+                lojista.setPhone((String) userDetails.get("phone"));
+            }
+            // Atualizar campos específicos do lojista
+            if (userDetails.containsKey("cnpj")) {
+                lojista.setCnpj((String) userDetails.get("cnpj"));
+            }
+            if (userDetails.containsKey("responsibleName")) {
+                lojista.setResponsibleName((String) userDetails.get("responsibleName"));
+            }
+            if (userDetails.containsKey("storeType")) {
+                lojista.setStoreType((String) userDetails.get("storeType"));
+            }
+            if (userDetails.containsKey("operatingHours")) {
+                lojista.setOperatingHours((String) userDetails.get("operatingHours"));
+            }
+            return ResponseEntity.ok(lojistaRepository.save(lojista));
+        }
+        
+        // Verificar se é um Admin
+        user = adminRepository.findById(id).orElse(null);
+        if (user != null) {
+            Admin admin = (Admin) user;
+            // Atualizar campos básicos
+            if (userDetails.containsKey("name")) {
+                admin.setName((String) userDetails.get("name"));
+            }
+            if (userDetails.containsKey("email")) {
+                admin.setEmail((String) userDetails.get("email"));
+            }
+            if (userDetails.containsKey("phone")) {
+                admin.setPhone((String) userDetails.get("phone"));
+            }
+            return ResponseEntity.ok(adminRepository.save(admin));
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
     @Transactional
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        return userRepository.findById(id).map(user -> {
-            // Se o usuário for um tutor, precisamos dissociar os pets antes de deletar.
-            if (user instanceof Tutor) {
-                Tutor tutor = (Tutor) user;
-                List<Pet> pets = petRepository.findByTutor(tutor);
-                for (Pet pet : pets) {
-                    pet.setTutor(null); // Ou reatribuir a um tutor "órfão", se existir
-                    petRepository.save(pet);
-                }
+        // Primeiro, tentar encontrar o usuário em cada repositório específico
+        User user = null;
+        
+        // Verificar se é um Tutor
+        user = tutorRepository.findById(id).orElse(null);
+        if (user != null) {
+            Tutor tutor = (Tutor) user;
+            // Desassociar pets do tutor
+            List<Pet> pets = petRepository.findByTutor(tutor);
+            for (Pet pet : pets) {
+                pet.setTutor(null);
+                petRepository.save(pet);
             }
-            userRepository.deleteById(id);
-            return ResponseEntity.noContent().<Void>build();
-        }).orElse(ResponseEntity.notFound().build());
+            tutorRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        
+        // Verificar se é um Veterinario
+        user = veterinarioRepository.findById(id).orElse(null);
+        if (user != null) {
+            Veterinario veterinario = (Veterinario) user;
+            // Desassociar serviços veterinários do veterinário (usando ownerId)
+            List<VetService> services = vetServiceRepository.findAll().stream()
+                .filter(service -> service.getOwnerId() != null && service.getOwnerId().equals(id))
+                .collect(Collectors.toList());
+            for (VetService service : services) {
+                service.setOwnerId(null);
+                service.setOwnerName(null);
+                service.setOwnerLocation(null);
+                service.setOwnerPhone(null);
+                service.setOwnerCrmv(null);
+                vetServiceRepository.save(service);
+            }
+            veterinarioRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        
+        // Verificar se é um Lojista
+        user = lojistaRepository.findById(id).orElse(null);
+        if (user != null) {
+            Lojista lojista = (Lojista) user;
+            // Desassociar produtos do lojista (usando ownerId)
+            List<Product> products = productRepository.findAll().stream()
+                .filter(product -> product.getOwnerId() != null && product.getOwnerId().equals(id))
+                .collect(Collectors.toList());
+            for (Product product : products) {
+                product.setOwnerId(null);
+                product.setOwnerName(null);
+                product.setOwnerLocation(null);
+                product.setOwnerPhone(null);
+                productRepository.save(product);
+            }
+            // Desassociar lojas do lojista (usando ownerId)
+            List<Store> stores = storeRepository.findAll().stream()
+                .filter(store -> store.getOwnerId() != null && store.getOwnerId().equals(id))
+                .collect(Collectors.toList());
+            for (Store store : stores) {
+                store.setOwnerId(null);
+                storeRepository.save(store);
+            }
+            lojistaRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        
+        // Verificar se é um Admin
+        user = adminRepository.findById(id).orElse(null);
+        if (user != null) {
+            adminRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
     // ===== GERENCIAMENTO DE PRODUTOS =====

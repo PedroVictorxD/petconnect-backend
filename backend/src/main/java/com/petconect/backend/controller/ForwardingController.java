@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ForwardingController {
 
-    @RequestMapping("/{path:[^\\.]*}")
+    @RequestMapping("/{path:(?!api).*}")
     public String forward() {
         return "forward:/";
     }
 
-    @RequestMapping(value = "/**/{path:[^\\.]*}")
+    @RequestMapping(value = "/**/{path:(?!api).*}")
     public String forwardWildcard() {
         return "forward:/";
     }
