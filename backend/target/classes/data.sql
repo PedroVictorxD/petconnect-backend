@@ -16,18 +16,28 @@ INSERT INTO users (dtype, name, email, password, phone, location, created_at, up
 
 -- Inserir pets de teste (associados ao Tutor ID 1)
 INSERT INTO pet (name, type, weight, age, activity_level, breed, notes, tutor_id, photo_url) VALUES
-('Rex', 'Cachorro', 15.5, 3, 'Alto', 'Golden Retriever', 'Muito brincalhão', 1, 'https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80'),
-('Luna', 'Gato', 4.2, 2, 'Médio', 'Siamês', 'Muito carinhosa', 1, 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80');
+('Rex', 'Cachorro', 15.5, 3, 'Alto', 'Golden Retriever', 'Muito brincalhão', 1, 'https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&h=300&q=80'),
+('Luna', 'Gato', 4.2, 2, 'Médio', 'Siamês', 'Muito carinhosa', 1, 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&h=300&q=80'),
+('Buddy', 'Cachorro', 12.0, 2, 'Alto', 'Border Collie', 'Muito inteligente e ativo', 1, 'https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=400&h=300&q=80'),
+('Mittens', 'Gato', 3.5, 1, 'Baixo', 'Persa', 'Calmo e tranquilo', 1, 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&h=300&q=80');
 
 -- Inserir produtos de teste (associados ao Lojista ID 3)
 INSERT INTO product (name, description, price, image_url, measurement_unit, owner_id, owner_name, owner_location, owner_phone) VALUES
-('Ração Premium', 'Ração de alta qualidade para cães adultos', 89.90, 'https://example.com/racao.jpg', 'kg', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777'),
-('Brinquedo Interativo', 'Brinquedo para estimular a mente do pet', 45.90, 'https://example.com/brinquedo.jpg', 'unidade', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777');
+('Ração Premium', 'Ração de alta qualidade para cães adultos', 89.90, 'https://images.unsplash.com/photo-1601758228041-3caa1532c761?auto=format&fit=crop&w=400&h=300&q=80', 'kg', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777'),
+('Brinquedo Interativo', 'Brinquedo para estimular a mente do pet', 45.90, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=400&h=300&q=80', 'unidade', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777'),
+('Coleira Ajustável', 'Coleira confortável e segura para passeios', 78.50, 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=400&h=300&q=80', 'unidade', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777'),
+('Cama para Pet', 'Cama confortável para descanso do pet', 120.00, 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=400&h=300&q=80', 'unidade', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777'),
+('Shampoo para Cães', 'Shampoo hipoalergênico para cães', 35.90, 'https://images.unsplash.com/photo-1601758228041-3caa1532c761?auto=format&fit=crop&w=400&h=300&q=80', 'ml', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777'),
+('Ração para Gatos', 'Ração premium para gatos adultos', 75.90, 'https://images.unsplash.com/photo-1601758228041-3caa1532c761?auto=format&fit=crop&w=400&h=300&q=80', 'kg', 3, 'PetShop Central', 'São Paulo, SP', '(11) 77777-7777');
 
 -- Inserir serviços veterinários de teste (associados ao Veterinario ID 2)
 INSERT INTO vet_service (name, description, price, owner_id, owner_name, owner_location, owner_phone, owner_crmv, operating_hours) VALUES
 ('Consulta Veterinária', 'Consulta completa com exame físico', 150.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'),
-('Vacinação', 'Aplicação de vacinas essenciais', 80.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h');
+('Vacinação', 'Aplicação de vacinas essenciais', 80.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'),
+('Castração', 'Procedimento cirúrgico de castração', 450.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'),
+('Exame de Sangue', 'Exame laboratorial completo', 200.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'),
+('Banho e Tosa', 'Serviço completo de higiene', 120.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'),
+('Emergência 24h', 'Atendimento de emergência', 300.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', '24 horas');
 
 -- Reinicia a sequência de IDs para o próximo valor disponível após os inserts manuais.
 -- Isso previne erros de "duplicate key" ao criar novos registros pela aplicação.

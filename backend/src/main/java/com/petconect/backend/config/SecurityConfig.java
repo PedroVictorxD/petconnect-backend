@@ -34,14 +34,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",
+                                "/api/auth/**", 
                                 "/api/tutores/**", 
                                 "/api/lojistas/**", 
                                 "/api/veterinarios/**",
                                 "/api/admin/**",
-                                "/api/pets/**", 
-                                "/api/products/**", 
-                                "/api/services/**", 
+                                "/api/pets/**",
+                                "/api/products/**",
+                                "/api/services/**",
                                 "/api/vet-services/**",
                                 "/api/food/**", 
                                 "/api/stores/**", 
