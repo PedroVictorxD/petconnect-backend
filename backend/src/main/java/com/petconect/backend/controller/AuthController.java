@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -78,5 +79,25 @@ public class AuthController {
         public void setEmail(String email) { this.email = email; }
         public String getPassword() { return password; }
         public void setPassword(String password) { this.password = password; }
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                String email = jwtUtil.getUsernameFromToken(token);
+                
+                if (email != null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                    if (jwtUtil.validateToken(token, userDetails)) {
+                        return ResponseEntity.ok(Map.of("valid", true, "message", "Token válido"));
+                    }
+                }
+            }
+            return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Token inválido"));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Token inválido"));
+        }
     }
 } 

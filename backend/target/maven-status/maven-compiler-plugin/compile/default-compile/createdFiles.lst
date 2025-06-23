@@ -13,7 +13,6 @@ com/petconect/backend/model/Store$StoreBuilder.class
 com/petconect/backend/model/Lojista.class
 com/petconect/backend/model/Food.class
 com/petconect/backend/BackendApplication.class
-com/petconect/backend/controller/ForwardingController.class
 com/petconect/backend/model/Product$ProductBuilder.class
 com/petconect/backend/controller/VeterinarioController.class
 com/petconect/backend/repository/AdminRepository.class

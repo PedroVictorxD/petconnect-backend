@@ -38,4 +38,3 @@
 /home/pedro/a3hoje/petconnect-backend-only/backend/src/main/java/com/petconect/backend/config/JwtRequestFilter.java
 /home/pedro/a3hoje/petconnect-backend-only/backend/src/main/java/com/petconect/backend/model/SecurityQuestion.java
 /home/pedro/a3hoje/petconnect-backend-only/backend/src/main/java/com/petconect/backend/model/Veterinario.java
-/home/pedro/a3hoje/petconnect-backend-only/backend/src/main/java/com/petconect/backend/controller/ForwardingController.java

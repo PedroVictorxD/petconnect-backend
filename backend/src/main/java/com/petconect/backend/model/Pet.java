@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Getter
@@ -35,7 +37,7 @@ public class Pet {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tutor_id", nullable = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pets"})
+    @JsonIgnore
     private Tutor tutor;
 
     private String photoUrl;
@@ -44,4 +46,19 @@ public class Pet {
     private String activityLevel;
     
     private String notes;
+
+    @JsonProperty("ownerId")
+    public Long getOwnerId() {
+        return (tutor != null) ? tutor.getId() : null;
+    }
+
+    @JsonProperty("ownerName")
+    public String getOwnerName() {
+        return (tutor != null) ? tutor.getName() : null;
+    }
+
+    @JsonProperty("ownerPhone")
+    public String getOwnerPhone() {
+        return (tutor != null) ? tutor.getPhone() : null;
+    }
 } 

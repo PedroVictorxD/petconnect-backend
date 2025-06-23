@@ -2,13 +2,13 @@
 -- Este script define a estrutura das tabelas
 
 -- Drop tables to ensure a clean state on startup
-DROP TABLE IF EXISTS vet_service CASCADE;
-DROP TABLE IF EXISTS product CASCADE;
-DROP TABLE IF EXISTS pet CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS food CASCADE;
-DROP TABLE IF EXISTS store CASCADE;
-DROP TABLE IF EXISTS security_question CASCADE;
+-- DROP TABLE IF EXISTS vet_service CASCADE;
+-- DROP TABLE IF EXISTS product CASCADE;
+-- DROP TABLE IF EXISTS pet CASCADE;
+-- DROP TABLE IF EXISTS users CASCADE;
+-- DROP TABLE IF EXISTS food CASCADE;
+-- DROP TABLE IF EXISTS store CASCADE;
+-- DROP TABLE IF EXISTS security_question CASCADE;
 
 -- Create users table for SINGLE_TABLE inheritance
 CREATE TABLE users (
@@ -67,6 +67,7 @@ CREATE TABLE vet_service (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE PRECISION NOT NULL,
+    image_url VARCHAR(255),
     owner_id BIGINT,
     owner_name VARCHAR(255),
     owner_location VARCHAR(255),
