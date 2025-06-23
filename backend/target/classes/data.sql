@@ -3,15 +3,16 @@
 
 -- Inserir usuários de teste na tabela base 'users' com senhas codificadas com BCrypt
 -- Senha para todos os usuários de teste é "admin123" (codificada com BCrypt)
-INSERT INTO users (id, dtype, name, email, password, phone, location, created_at, updated_at, crmv, cnpj, responsible_name, operating_hours, store_type) VALUES
--- Tutor (ID 1)
-(1, 'TUTOR', 'João Silva', 'tutor@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 99999-9999', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, NULL, NULL, NULL),
--- Veterinario (ID 2)
-(2, 'VETERINARIO', 'Dr. Maria Santos', 'vet@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 88888-8888', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CRMV-SP 12345', NULL, NULL, NULL, NULL),
--- Lojista (ID 3)
-(3, 'LOJISTA', 'PetShop Central', 'lojista@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 77777-7777', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '00.000.000/0001-00', 'João da Silva', 'Segunda a Sexta, 8h às 18h', 'Petshop'),
--- Admin (ID 4)
-(4, 'ADMIN', 'Administrador', 'admin@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 66666-6666', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, NULL, NULL, NULL);
+-- IDs são omitidos para permitir que a sequência do banco de dados os gere automaticamente.
+INSERT INTO users (dtype, name, email, password, phone, location, created_at, updated_at, crmv, cnpj, responsible_name, operating_hours, store_type) VALUES
+-- Tutor
+('TUTOR', 'João Silva', 'tutor@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 99999-9999', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, NULL, NULL, NULL),
+-- Veterinario
+('VETERINARIO', 'Dr. Maria Santos', 'vet@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 88888-8888', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CRMV-SP 12345', NULL, NULL, NULL, NULL),
+-- Lojista
+('LOJISTA', 'PetShop Central', 'lojista@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 77777-7777', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '00.000.000/0001-00', 'João da Silva', 'Segunda a Sexta, 8h às 18h', 'Petshop'),
+-- Admin
+('ADMIN', 'Administrador', 'admin@teste.com', '$2a$10$Hg4ril7fJL2.GRTXLmwGwOqeMmaDL2Wjn4xbCGXsZkbvv9OvCkmAW', '(11) 66666-6666', 'São Paulo, SP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, NULL, NULL, NULL);
 
 -- Inserir pets de teste (associados ao Tutor ID 1)
 INSERT INTO pet (name, type, weight, age, activity_level, breed, notes, tutor_id, photo_url) VALUES
@@ -26,4 +27,8 @@ INSERT INTO product (name, description, price, image_url, measurement_unit, owne
 -- Inserir serviços veterinários de teste (associados ao Veterinario ID 2)
 INSERT INTO vet_service (name, description, price, owner_id, owner_name, owner_location, owner_phone, owner_crmv, operating_hours) VALUES
 ('Consulta Veterinária', 'Consulta completa com exame físico', 150.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'),
-('Vacinação', 'Aplicação de vacinas essenciais', 80.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h'); 
+('Vacinação', 'Aplicação de vacinas essenciais', 80.00, 2, 'Dr. Maria Santos', 'São Paulo, SP', '(11) 88888-8888', 'CRMV-SP 12345', 'Segunda a Sexta, 8h às 18h');
+
+-- Reinicia a sequência de IDs para o próximo valor disponível após os inserts manuais.
+-- Isso previne erros de "duplicate key" ao criar novos registros pela aplicação.
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users), true); 

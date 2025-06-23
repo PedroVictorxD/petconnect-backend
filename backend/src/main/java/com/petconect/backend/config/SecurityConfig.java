@@ -34,22 +34,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**", 
-                                "/api/tutores", 
-                                "/api/lojistas", 
-                                "/api/veterinarios",
-                                "/api/admin/admins",
-                                "/api/pets/**",
-                                "/api/products/**",
-                                "/api/services/**",
-                                "/",
-                                "/#/**",
-                                "/*",
-                                "/static/**",
-                                "/*.js",
-                                "/*.css",
-                                "/*.ico",
-                                "/*.png"
+                                "/api/auth/**",
+                                "/api/tutores/**", 
+                                "/api/lojistas/**", 
+                                "/api/veterinarios/**",
+                                "/api/admin/**",
+                                "/api/pets/**", 
+                                "/api/products/**", 
+                                "/api/services/**", 
+                                "/api/vet-services/**",
+                                "/api/food/**", 
+                                "/api/stores/**", 
+                                "/api/security-questions/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

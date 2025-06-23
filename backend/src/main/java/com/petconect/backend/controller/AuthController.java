@@ -79,4 +79,24 @@ public class AuthController {
         public String getPassword() { return password; }
         public void setPassword(String password) { this.password = password; }
     }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                String email = jwtUtil.getUsernameFromToken(token);
+                
+                if (email != null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                    if (jwtUtil.validateToken(token, userDetails)) {
+                        return ResponseEntity.ok(Map.of("valid", true, "message", "Token válido"));
+                    }
+                }
+            }
+            return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Token inválido"));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Token inválido"));
+        }
+    }
 } 

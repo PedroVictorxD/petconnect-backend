@@ -16,6 +16,7 @@ public class VetService {
     private String name;
     private String description;
     private double price;
+    private String imageUrl;
     private Long ownerId;
     private String ownerName;
     private String ownerLocation;
